@@ -26,12 +26,17 @@ class TicTacToeGame(Game):
         self.menu = game_menu
         #Because the game has just started the previous menu is None
         self.prev_menu = None
+        self.player_letter = self.game_board.X
     def start(self):
-        self.display.start_menu()
+        self.display.start_menu(self)
         super().start()
     def move(self):
-        row, col = self.display.move()
-        game.game_board.move(row-1, col-1, "x")
+        row, col = self.display.move(self.player_letter)
+        self.game_board.move(row, col, self.player_letter)
+        if self.player_letter==game.game_board.X:
+            self.player_letter = self.game_board.O
+        else:
+            self.player_letter = self.game_board.X
         self.display.game_screen(game)
     def end_game(self):
         self.display.exit_screen()
