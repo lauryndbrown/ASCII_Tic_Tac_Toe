@@ -7,7 +7,7 @@ class TicTacToe:
     """
     Class containing game logic to Tic-Tac-Toe 
     """
-    EMPTY = "empty"
+    EMPTY = " "
     X = "x"
     O = "o"
     def __init__(self):
@@ -48,8 +48,10 @@ class TicTacToe:
     def avalible_moves(self):
         pass
     def __str__(self):
-        pass
+        s = """\n{} | {} | {}\n----------\n{} | {} | {}\n----------\n{} | {} | {}\n""".format(self.board[0][0], self.board[0][1], self.board[0][2], self.board[1][0], self.board[1][1], self.board[1][2], self.board[2][0], self.board[2][1], self.board[2][2])
+       
+        return s
 
     def __repr__(self):
-        pass
+        self.__str__()
         

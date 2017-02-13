@@ -17,6 +17,7 @@ class TicTacToeGame(Game):
         #Game Menu
         game_menu.append(Choice("End Game",self.end_game, None, None))
         game_menu.append(Choice("Settings",self.display.settings_screen, (self,), self.SETTINGS_MENU_NAME))
+        game_menu.append(Choice("Move", self.move, (), None))
         #Settings Menu
         settings_menu.append(Choice(self.BACK_OPTION,self.display.game_screen, (self,), self.GAME_MENU_NAME))
         #settings_menu.append(Choice("Toggle 1 or 2 Players",self.display.game_screen, (self,), self.GAME_MENU))
@@ -28,6 +29,10 @@ class TicTacToeGame(Game):
     def start(self):
         self.display.start_menu()
         super().start()
+    def move(self):
+        row, col = self.display.move()
+        game.game_board.move(row-1, col-1, "x")
+        self.display.game_screen(game)
     def end_game(self):
         self.display.exit_screen()
 if __name__=="__main__":

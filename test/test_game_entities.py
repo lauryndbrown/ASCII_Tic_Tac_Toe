@@ -38,5 +38,11 @@ class TicTacToeTestCase(unittest.TestCase):
         pass
     def test_has_won_diagonals(self):
         pass
-
+    def test_str_(self):
+        board = TicTacToe()
+        board.board = [[ TicTacToe.X,TicTacToe.X,TicTacToe.X],
+         [ TicTacToe.X,TicTacToe.X,TicTacToe.X],
+         [ TicTacToe.X,TicTacToe.X,TicTacToe.X]]
+        board_str = """\nx | x | x\n----------\nx | x | x\n----------\nx | x | x\n"""
+        self.assertEqual(board_str,str(board))
        
