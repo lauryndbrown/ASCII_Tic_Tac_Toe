@@ -109,7 +109,7 @@ class TicTacToeDisplay(Display):
                 response = input(message)
                 if response.isdigit():
                     response = int(response)
-                if response in range(1,9):
+                if response in range(1,10):
                     return response
         pos = ask_next_move()
         print("pos:", str(pos))
@@ -121,7 +121,7 @@ class TicTacToeDisplay(Display):
         self.build_board(game.game_board.board)
         self.fill_screen(self.GAME_SCREEN_OFFSET)
         if game_over:
-            message ="Congrats Player {}! You Win!".format(game.player_letter) 
+            message ="Congrats Player {}! You Win!".format(game.current_player.value) 
             print(self.center(message," "))
         self._in_game_menu(game.menu)
         self.last_menu = (self.game_screen, (game,))

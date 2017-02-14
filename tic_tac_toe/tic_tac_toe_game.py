@@ -1,7 +1,7 @@
 from ascii_game.game import Game, Choice
-from ascii_game.player import Player
 from tic_tac_toe.game_entities import TicTacToe
 from tic_tac_toe.tic_tac_toe_display import TicTacToeDisplay
+from tic_tac_toe.player import *
 
 class TicTacToeGame(Game):
     #Menu Names
@@ -39,24 +39,32 @@ class TicTacToeGame(Game):
         self.menu = start_menu
         #Because the game has just started the previous menu is None
         self.prev_menu = None
-        self.player_letter = self.game_board.X
+        self.current_player = self.player_1
     def start(self):
         self.display.start_menu(self)
         super().start()
     def move(self):
-        row, col = self.display.move(self.player_letter)
-        self.game_board.move(row, col, self.player_letter)
-        if self.game_board.has_won():
-            self.menu = self.menus[self.GAME_OVER_MENU_NAME]
-            self.display.game_screen(game, self.GAME_OVER)
-        else:
-            self._switch_player()
-            self.display.game_screen(game)
+        def computer_player():
+            if issubclass(self.current_player.__class__, ComputerPlayer):
+                row, col = self.current_player.move(self.game_board)    
+                self.game_board.move(row, col, self.current_player.value)
+                self._switch_player()
+        def check_game_over():
+            if self.game_board.has_won():
+                self.menu = self.menus[self.GAME_OVER_MENU_NAME]
+                self.display.game_screen(game, self.GAME_OVER)
+            else:
+                self._switch_player()
+                computer_player()
+                self.display.game_screen(game)
+        row, col = self.display.move(self.current_player.value)
+        self.game_board.move(row, col, self.current_player.value)
+        check_game_over()
     def _switch_player(self):
-        if self.player_letter==game.game_board.X:
-            self.player_letter = self.game_board.O
+        if self.current_player==self.player_1:
+            self.current_player = self.player_2
         else:
-            self.player_letter = self.game_board.X
+            self.current_player = self.player_1
     def new_game(self):
         self.game_board.empty_board()
         self.display.game_screen(self)
@@ -67,8 +75,8 @@ class TicTacToeGame(Game):
         self.display.start_menu(self)
 if __name__=="__main__":
     display = TicTacToeDisplay()
-    player1 = Player("Player1")
-    player2 = Player("Player2")
+    player1 = TicTacToePlayer("Player1",TicTacToe.X)
+    player2 = RandomComputerPlayer("Player2", TicTacToe.O)
     game = TicTacToeGame(display, player1, player2)
     game.start()
 

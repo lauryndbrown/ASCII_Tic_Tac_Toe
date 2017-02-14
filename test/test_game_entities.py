@@ -103,6 +103,17 @@ class TicTacToeTestCase(unittest.TestCase):
          [ TicTacToe.X,TicTacToe.O,TicTacToe.O],
          [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X]]
         self.assertEqual(board.has_won(),False)
+    def test_availble_moves(self):
+        board = TicTacToe()
+        expected = [(x,y) for x in range(3) for y in range(3)]
+        self.assertEqual( board.avalible_moves(),expected)
+        board.move(0,0, board.X)
+        board.move(2,0, board.O)
+        board.move(1,1, board.X)
+        expected.remove((0,0))
+        expected.remove((2,0))
+        expected.remove((1,1))
+        self.assertEqual( board.avalible_moves(),expected)
     def test_str_(self):
         board = TicTacToe()
         board.board = [[ TicTacToe.X,TicTacToe.X,TicTacToe.X],
