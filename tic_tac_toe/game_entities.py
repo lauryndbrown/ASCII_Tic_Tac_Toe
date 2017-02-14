@@ -7,7 +7,7 @@ class TicTacToe:
     """
     Class containing game logic to Tic-Tac-Toe 
     """
-    EMPTY = " "
+    EMPTY = ""
     X = "x"
     O = "o"
     def __init__(self):
@@ -30,18 +30,26 @@ class TicTacToe:
     def has_won(self):
         def rows_same():
             row1 = self.board[0][0]==self.board[0][1]==self.board[0][2]
+            row1 = row1 and self.board[0][0]!=self.EMPTY
             row2 = self.board[1][0]==self.board[1][1]==self.board[1][2]
+            row2 = row2 and self.board[1][0]!=self.EMPTY
             row3 = self.board[2][0]==self.board[2][1]==self.board[2][2]
+            row3 = row3 and self.board[2][0]!=self.EMPTY
             return row1 or row2 or row3
-        def col_same():
-            row1 = self.board[0][0]==self.board[1][0]==self.board[2][0]
-            row2 = self.board[1][0]==self.board[1][1]==self.board[2][1]
-            row3 = self.board[0][2]==self.board[1][2]==self.board[2][2]
-            return row1 or row2 or row3
+        def cols_same():
+            col1 = self.board[0][0]==self.board[1][0]==self.board[2][0]
+            col1 = col1 and self.board[0][0]!=self.EMPTY
+            col2 = self.board[0][1]==self.board[1][1]==self.board[2][1]
+            col2 = col2 and self.board[0][1]!=self.EMPTY
+            col3 = self.board[0][2]==self.board[1][2]==self.board[2][2]
+            col3 = col3 and self.board[0][2]!=self.EMPTY
+            return col1 or col2 or col3
 
         def same_diagonal():
             row1 = self.board[0][0]==self.board[1][1]==self.board[2][2]
+            row1 = row1 and self.board[0][0]!=self.EMPTY
             row2 = self.board[0][2]==self.board[1][1]==self.board[2][0]
+            row2 = row2 and self.board[0][2]!=self.EMPTY
             return row1 or row2
             
         return rows_same() or cols_same() or same_diagonal()

@@ -32,12 +32,77 @@ class TicTacToeTestCase(unittest.TestCase):
         self.assertEqual(tictactoe.board[0][1],TicTacToe.O)
         self.assertEqual(tictactoe.board[1][0],TicTacToe.X)
 
-    def test_has_won_rows(self):
-        pass
     def test_has_won_cols(self):
-        pass
+        board = TicTacToe()
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.X,TicTacToe.EMPTY,TicTacToe.EMPTY],
+         [ TicTacToe.X,TicTacToe.EMPTY,TicTacToe.EMPTY],
+         [ TicTacToe.X,TicTacToe.EMPTY,TicTacToe.EMPTY]]
+        self.assertEqual(board.has_won(),True)
+        board.empty_board()
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.EMPTY,TicTacToe.O,TicTacToe.EMPTY],
+         [ TicTacToe.EMPTY,TicTacToe.O,TicTacToe.EMPTY],
+         [ TicTacToe.EMPTY,TicTacToe.O,TicTacToe.EMPTY]]
+        self.assertEqual(board.has_won(),True)
+        board.empty_board()
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X]]
+        self.assertEqual(board.has_won(),True)
+        board.board = [[ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.O],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X]]
+        self.assertEqual(board.has_won(),False)
+
+    def test_has_won_rows(self):
+        board = TicTacToe()
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.X,TicTacToe.X,TicTacToe.X],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.EMPTY],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.EMPTY]]
+        self.assertEqual(board.has_won(),True)
+        board.empty_board()
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.EMPTY],
+         [ TicTacToe.O,TicTacToe.O,TicTacToe.O],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.EMPTY]]
+        self.assertEqual(board.has_won(),True)
+        board.empty_board()
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.EMPTY],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.EMPTY],
+         [ TicTacToe.X,TicTacToe.X,TicTacToe.X]]
+        self.assertEqual(board.has_won(),True)
+        board.board = [[ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X],
+         [ TicTacToe.X,TicTacToe.O,TicTacToe.O],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X]]
+        self.assertEqual(board.has_won(),False)
     def test_has_won_diagonals(self):
-        pass
+        board = TicTacToe()
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.X,TicTacToe.EMPTY,TicTacToe.EMPTY],
+         [ TicTacToe.EMPTY,TicTacToe.X,TicTacToe.EMPTY],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X]]
+        self.assertEqual(board.has_won(),True)
+        board.empty_board()
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.O],
+         [ TicTacToe.EMPTY,TicTacToe.O,TicTacToe.EMPTY],
+         [ TicTacToe.O,TicTacToe.EMPTY,TicTacToe.EMPTY]]
+        self.assertEqual(board.has_won(),True)
+        board.empty_board()
+        self.assertEqual(board.has_won(),False)
+        board.board = [
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.O],
+         [ TicTacToe.EMPTY,TicTacToe.X,TicTacToe.EMPTY],
+         [ TicTacToe.O,TicTacToe.X,TicTacToe.X]]
+        self.assertEqual(board.has_won(),False)
+        board.board = [[ TicTacToe.X,TicTacToe.EMPTY,TicTacToe.X],
+         [ TicTacToe.X,TicTacToe.O,TicTacToe.O],
+         [ TicTacToe.EMPTY,TicTacToe.EMPTY,TicTacToe.X]]
+        self.assertEqual(board.has_won(),False)
     def test_str_(self):
         board = TicTacToe()
         board.board = [[ TicTacToe.X,TicTacToe.X,TicTacToe.X],

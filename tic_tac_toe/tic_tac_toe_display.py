@@ -41,10 +41,10 @@ class TicTacToeDisplay(Display):
         Create Board images and Dictionary Mapping
         """
         self.ascii_empty = ((" "*10)+"\n")*5
-        self.ascii_vline = "  |  \n  |  \n  |  \n  |  \n  |  \n"
+        self.ascii_vline = " | \n | \n | \n | \n | \n"
         self.ascii_line ="-"*40 
         self.board = {
-                    TicTacToe.EMPTY:self.ascii_empty,
+                    TicTacToe.EMPTY:list(self.ascii_empty),
                     TicTacToe.O:self.ascii_o,
                     TicTacToe.X:self.ascii_x
                         }    
@@ -55,34 +55,67 @@ class TicTacToeDisplay(Display):
         self._in_game_menu(game.menu)
         self.last_menu = (self.game_screen, (game,))
     def build_board(self, board):
-        def build_row(values):
-            col1 = self.board[values[0]] 
-            col2 = self.board[values[1]] 
-            col3 = self.board[values[2]] 
+        def get_col(value, pos):
+            if value==TicTacToe.EMPTY:
+                empty_col = self.board[value]
+                empty_col[28] = str(pos)
+                return "".join(empty_col)
+            return self.board[value]
+        def build_row(values, pos):
+            col1 = get_col(values[0], pos)
+            col2 = get_col(values[1], pos+1)
+            col3 = get_col(values[2], pos+2)
             row_a = self.image_converter.combine(col1, self.ascii_vline)
             row_b = self.image_converter.combine(col2, self.ascii_vline)
             row = self.image_converter.combine(row_a, row_b)
             row = self.image_converter.combine(row,col3)
-            return row
-
-        row1 = build_row(board[0])
-        row2 = build_row(board[1])
-        row3 = build_row(board[2])
+            return row, pos+2
+        pos = 1
+        row1, pos = build_row(board[0], pos)
+        row2, pos = build_row(board[1], pos+1)
+        row3, pos = build_row(board[2], pos+1)
         print(row1, end="")
         print(self.ascii_line)
         print(row2, end="")
         print(self.ascii_line)
         print(row3, end="")
     def move(self, player_letter):
-        print("Player {}".format(player_letter))
-        row = enter_next_action("Enter 0, 1, or 2 for Row: ", [0,1,2], self)
-        col = enter_next_action("Enter 0, 1, or 2 for Column: ", [0,1,2], self)
+        def get_row_col(pos):
+            row = None
+            col = None
+            if pos<=3:
+                row = 0
+            elif pos>3 and pos<=6:
+                row = 1
+            else:
+                row = 2
+            if pos%3==0:
+                col=2
+            elif pos%3==1:
+                col=0
+            else:
+                col=1
+            return row, col
+        def ask_next_move():
+            message = "Player {} Enter 1-9 for Position:".format(player_letter)
+            while True:
+                response = input(message)
+                if response.isdigit():
+                    response = int(response)
+                if response in range(1,9):
+                    return response
+        pos = ask_next_move()
+        print("pos:", str(pos))
+        row, col = get_row_col(int(pos))
         return row, col
-    def game_screen(self, game):
+    def game_screen(self, game, game_over=False):
         self.clear_screen()
         print(self.center("Tic Tac Toe", self.HR_BOLD))
         self.build_board(game.game_board.board)
         self.fill_screen(self.GAME_SCREEN_OFFSET)
+        if game_over:
+            message ="Congrats Player {}! You Win!".format(game.player_letter) 
+            print(self.center(message," "))
         self._in_game_menu(game.menu)
         self.last_menu = (self.game_screen, (game,))
     def settings_screen(self, game):
