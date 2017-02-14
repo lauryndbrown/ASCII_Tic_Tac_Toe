@@ -35,6 +35,9 @@ class TicTacToeDisplay(Display):
         self.ascii_x = self.image_converter.image_to_ascii(x_image)
         self.image_converter.invert_chars()
         self.ascii_title = self.image_converter.image_to_ascii(title_image)
+        title_offset = (self.get_terminal_col()-80)//2
+        title_offset_str = ((" "*title_offset)+'\n')*20
+        self.ascii_title = self.image_converter.combine(title_offset_str, self.ascii_title)
     def _create_board_parts(self):
         """
         Used in __init__
@@ -48,7 +51,6 @@ class TicTacToeDisplay(Display):
                     TicTacToe.O:self.ascii_o,
                     TicTacToe.X:self.ascii_x
                         }    
-        
     def start_menu(self, game):
         self.clear_screen()
         print(self.ascii_title)
@@ -69,15 +71,20 @@ class TicTacToeDisplay(Display):
             row_b = self.image_converter.combine(col2, self.ascii_vline)
             row = self.image_converter.combine(row_a, row_b)
             row = self.image_converter.combine(row,col3)
+            row = self.image_converter.combine(self.board_col_offset, row)
             return row, pos+2
         pos = 1
+        col_offset = (self.get_terminal_col()-len(self.ascii_line))//2
+        self.board_col_offset = ((" "*(col_offset))+'\n')*5 
+        self.board_offset = " "*col_offset 
         row1, pos = build_row(board[0], pos)
         row2, pos = build_row(board[1], pos+1)
         row3, pos = build_row(board[2], pos+1)
+        
         print(row1, end="")
-        print(self.ascii_line)
+        print(self.board_offset+self.ascii_line)
         print(row2, end="")
-        print(self.ascii_line)
+        print(self.board_offset+self.ascii_line)
         print(row3, end="")
     def move(self, player_letter):
         def get_row_col(pos):
