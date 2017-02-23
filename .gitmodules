@@ -1,3 +1,3 @@
-[submodule "tic-tac-toe/ascii_game"]
-	path = tic-tac-toe/ascii_game
+[submodule "tic_tac_toe/ascii_game"]
+	path = tic_tac_toe/ascii_game
 	url = git@github.com:lauryndbrown/AsciiGame.git
