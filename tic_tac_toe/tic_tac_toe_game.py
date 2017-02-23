@@ -84,11 +84,11 @@ class TicTacToeGame(Game):
         self.display.game_screen(self)
     def change_computer_player(self):
         if isinstance(game.player_2, RandomComputerPlayer):
-            game.player_2 = MixedComputerPlayer("Computer", TicTacToe.O)
+            game.player_2 = MixedComputerPlayer(self.COMPUTER_NAME, TicTacToe.O)
         elif isinstance(game.player_2, MixedComputerPlayer):
-            game.player_2 = PerfectComputerPlayer("Computer", TicTacToe.O)
+            game.player_2 = PerfectComputerPlayer(self.COMPUTER_NAME, TicTacToe.O)
         else:
-            game.player_2 = RandomComputerPlayer("Computer", TicTacToe.O)
+            game.player_2 = RandomComputerPlayer(self.COMPUTER_NAME, TicTacToe.O)
         self.display.settings_screen(self)
     def end_game(self):
         self.display.exit_screen()

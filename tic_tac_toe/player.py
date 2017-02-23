@@ -50,4 +50,4 @@ class MixedComputerPlayer(ComputerPlayer):
         random_player = RandomComputerPlayer(name, value, high_score) 
         self.strategy = [perfect_player, random_player]
     def move(self, board):
-        random.choice(self.strategy).move(board)
+        return random.choice(self.strategy).move(board)
