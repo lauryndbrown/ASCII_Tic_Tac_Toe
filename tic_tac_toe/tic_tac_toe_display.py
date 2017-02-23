@@ -110,9 +110,15 @@ class TicTacToeDisplay(Display):
         self.build_board(game.game_board.board)
         self.fill_screen(self.GAME_SCREEN_OFFSET)
         if game_over:
-            player_name = game.current_player.value
-            player_name = player_name.upper()
-            message ="Congrats Player {}! You Win!".format(player_name) 
+            if not game.current_player:
+                message ="It's a tie."
+            else:
+                player_name = game.current_player.value
+                player_name = player_name.upper()
+                if issubclass(game.current_player.__class__, ComputerPlayer):
+                    message ="Sorry. You Lose!"
+                else:
+                    message ="Congrats Player {}! You Win!".format(player_name) 
             print(self.center(message," "))
         self._in_game_menu(game.menu)
         self.last_menu = (self.game_screen, (game,))

@@ -59,6 +59,11 @@ class TicTacToeGame(Game):
                 self.menu = self.menus[self.GAME_OVER_MENU_NAME]
                 self.display.game_screen(game, self.GAME_OVER)
                 return True
+            if not self.game_board.avalible_moves():
+                self.current_player = None
+                self.menu = self.menus[self.GAME_OVER_MENU_NAME]
+                self.display.game_screen(game, self.GAME_OVER)
+                return True
             return False
         row, col = self.display.move(self.current_player.value)
         self.game_board.move((row,col), self.current_player.value)
@@ -74,6 +79,7 @@ class TicTacToeGame(Game):
         else:
             self.current_player = self.player_1
     def new_game(self):
+        self.current_player = self.player_1 
         self.game_board.empty_board()
         self.display.game_screen(self)
     def change_computer_player(self):
@@ -92,7 +98,7 @@ class TicTacToeGame(Game):
 if __name__=="__main__":
     display = TicTacToeDisplay()
     player1 = TicTacToePlayer("Player1",TicTacToe.X)
-    player2 = RandomComputerPlayer("Player2", TicTacToe.O)
+    player2 = PerfectComputerPlayer("Player2", TicTacToe.O)
     game = TicTacToeGame(display, player1, player2)
     game.start()
 

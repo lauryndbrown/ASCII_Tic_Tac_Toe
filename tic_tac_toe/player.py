@@ -12,7 +12,7 @@ class ComputerPlayer(TicTacToePlayer):
     @abstractmethod
     def move(self, board):
         pass
-    def get_oppenent_value(self):
+    def get_opponent_value(self):
         if self.value==TicTacToe.X:
             return TicTacToe.O
         return TicTacToe.X
