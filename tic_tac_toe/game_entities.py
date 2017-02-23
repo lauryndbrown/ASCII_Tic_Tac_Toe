@@ -20,13 +20,46 @@ class TicTacToe:
         for row in range(len(self.board)):
             for col in range(len(self.board[row])):
                 self.board[row][col] = TicTacToe.EMPTY 
-    def move(self, row, col, val):
+    def get_pos_value(self, pos):
+        row, col = self.get_row_col(pos)
+        return self.board[row][col]
+    def get_row_col(pos):
+        row = None
+        col = None
+        if pos<=3:
+            row = 0
+        elif pos>3 and pos<=6:
+            row = 1
+        else:
+            row = 2
+        if pos%3==0:
+            col=2
+        elif pos%3==1:
+            col=0
+        else:
+            col=1
+        return row, col
+    def try_move(self, row, col, val):
+        if self.board[row][col]==self.EMPTY:
+            self.board[row][col] = val
+            winner = self.has_won()
+            self.board[row][col] = self.EMPTY
+            return winner
+        return False
+            
+    def move(self, pos, val):
+        
+        if isinstance(pos, int):
+            row, col = get_row_col(pos)
+        else:
+            row, col = pos[0], pos[1]
         if val!=TicTacToe.EMPTY and val!=TicTacToe.X and val!=TicTacToe.O:
             raise ValueError("Invalid value")
         try:
             self.board[row][col] = val
         except:
             raise ValueError
+    
     def has_won(self):
         def rows_same():
             row1 = self.board[0][0]==self.board[0][1]==self.board[0][2]

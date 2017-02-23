@@ -1,4 +1,5 @@
 from ascii_game.player import Player
+from tic_tac_toe.game_entities import TicTacToe
 from abc import ABC, abstractmethod
 import random
 class TicTacToePlayer(Player):
@@ -11,12 +12,37 @@ class ComputerPlayer(TicTacToePlayer):
     @abstractmethod
     def move(self, board):
         pass
+    def get_oppenent_value(self):
+        if self.value==TicTacToe.X:
+            return TicTacToe.O
+        return TicTacToe.X
 class RandomComputerPlayer(ComputerPlayer):
     def move(self, board):
         return random.choice(board.avalible_moves())
 class PerfectComputerPlayer(ComputerPlayer):
+    NO_WIN = None
+    CENTER = (1,1)
+    CORNERS = [(0,0),(2,0),(0,2),(2,2)]
     def move(self, board):
-        pass
+        moves = board.avalible_moves()
+        win = self.win_possible(moves, self.value, board)
+        if win:
+            return win
+        opponent_win = self.win_possible(moves, self.get_opponent_value(), board)
+        if opponent_win:
+            return opponent_win
+        if self.CENTER in moves:
+            return self.CENTER
+        for move in self.CORNERS:
+            if move in moves:
+                return move
+        return random.choice(board.avalible_moves())
+        
+    def win_possible(self, moves, value, board):
+        for move in moves:
+            if board.try_move(move[0],move[1],value):
+                return move
+        return self.NO_WIN
 class MixedComputerPlayer(ComputerPlayer):
     def __init__(self, name, value, high_score=0):
         super().__init__(name, value, high_score)
