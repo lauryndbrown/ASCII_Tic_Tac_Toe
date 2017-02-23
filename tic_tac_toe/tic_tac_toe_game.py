@@ -65,7 +65,7 @@ class TicTacToeGame(Game):
                 self.display.game_screen(game, self.GAME_OVER)
                 return True
             return False
-        row, col = self.display.move(self.current_player.value)
+        row, col = self.display.move(self.current_player.value, self.game_board.avalible_moves())
         self.game_board.move((row,col), self.current_player.value)
         if not game_over():
             self._switch_player()
@@ -93,6 +93,7 @@ class TicTacToeGame(Game):
     def end_game(self):
         self.display.exit_screen()
     def end_current_game(self):
+        self.current_player = self.player_1 
         self.game_board.empty_board()
         self.display.start_menu(self)
 if __name__=="__main__":

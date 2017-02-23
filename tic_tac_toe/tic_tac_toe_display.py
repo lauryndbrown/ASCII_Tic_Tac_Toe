@@ -91,14 +91,14 @@ class TicTacToeDisplay(Display):
         print(row2, end="")
         print(self.board_offset+self.ascii_line)
         print(row3, end="")
-    def move(self, player_letter):
+    def move(self, player_letter, moves):
         def ask_next_move():
             message = "You're player {}! Enter 1-9 for Position:".format(player_letter.upper())
             while True:
                 response = input(message)
                 if response.isdigit():
                     response = int(response)
-                if response in range(1,10):
+                if response in range(1,10) and TicTacToe.get_row_col(response) in moves:
                     return response
         pos = ask_next_move()
         print("pos:", str(pos))
