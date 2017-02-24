@@ -1,4 +1,4 @@
-# ASCII_Tic_TacToe
+# ASCII_Tic_Tac_Toe
 Tic-Tac-Toe Implementation using [ASCII Game Framework](https://github.com/lauryndbrown/AsciiGame/tree/master)
 
 ![Language:Python3](https://img.shields.io/badge/Language-python3-green.svg)
