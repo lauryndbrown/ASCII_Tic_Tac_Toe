@@ -13,7 +13,7 @@ Clone the Project.
 ```
 git clone git@github.com:lauryndbrown/ASCII_Tic_Tac_Toe.git --recursive
 ```
-Then run this command below and follow the in-game prompts. You'll need Python 3.
+Then run this command below and follow the in-game prompts. You'll need **Python 3**.
 ```
 python -m tic_tac_toe.tic_tac_toe_game
 ```
