@@ -19,8 +19,9 @@ python -m tic_tac_toe.tic_tac_toe_game
 ```
 
 ## Files
-* tic_tac_toe_game.py - Contains the logic for the menus in the game. 
-* tic_tac_toe_display.py - Creates everything you see on the screen. 
-* game_entities.py - contains the underlying logic for the Tic-Tac-Toe board.
-* player.py - contains the classes for the various player types in the game. 
+* **tic_tac_toe_game.py** - Contains the logic for the menus in the game. 
+* **tic_tac_toe_display.py** - Creates everything you see on the screen. 
+* **game_entities.py** - contains the underlying logic for the Tic-Tac-Toe board.
+* **player.py** - contains the classes for the various player types in the game. 
+
 Note that these files inherit additional functionality from the ASCII Game Framework.
