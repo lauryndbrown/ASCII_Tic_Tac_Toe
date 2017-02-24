@@ -5,10 +5,11 @@ from tic_tac_toe.player import *
 from PIL import Image
 import time
 import random
+import os
 
 class TicTacToeDisplay(Display):
     #Images Directory
-    IMAGES = "tic_tac_toe\\Images\\"
+    IMAGES = os.path.join("tic_tac_toe","Images")
     #Offsets used to determine the whitespace needed to fill the screen
     TITLE_OFFSET = 3
     IN_GAME_MENU_OFFSET = 4
@@ -26,11 +27,11 @@ class TicTacToeDisplay(Display):
         Used in __init__ 
         Create Images and Convert Images to ascii
         """
-        title_image = Image.open(self.IMAGES+"title.png")
-        x_image = Image.open(self.IMAGES+"x.png")
-        o_image = Image.open(self.IMAGES+"o.png")
-        line_image = Image.open(self.IMAGES+"line.png")
-        vline_image = Image.open(self.IMAGES+"verticle_line.png")
+        title_image = Image.open(os.path.join(self.IMAGES, "title.png"))
+        x_image = Image.open(os.path.join(self.IMAGES, "x.png"))
+        o_image = Image.open(os.path.join(self.IMAGES,"o.png"))
+        line_image = Image.open(os.path.join(self.IMAGES,"line.png"))
+        vline_image = Image.open(os.path.join(self.IMAGES,"verticle_line.png"))
         self.image_converter.row_incr = 5
         self.image_converter.col_incr = 5
         title_image = self.image_converter.scale_image(title_image, 400)
