@@ -25,21 +25,19 @@ class TicTacToeGame(Game):
         #Start Menu
         start_menu.append(Choice("Start Game",self.display.game_screen, (self,), self.GAME_MENU_NAME))
         start_menu.append(Choice("Settings",self.display.settings_screen, (self,), self.SETTINGS_MENU_NAME))
-       # start_menu.append(Choice("Credits",self.display.credits_screen,(self,), self.CREDITS_MENU_NAME))
         start_menu.append(Choice("Exit TicTacToe",self.end_game, None, None))
         #Game Menu
         game_menu.append(Choice("Make Next Move", self.move, (), None))
         game_menu.append(Choice("End Game",self.end_current_game, (), self.START_MENU_NAME))
         #Game Over Menu
         game_over_menu.append(Choice("End Game",self.end_current_game, (), self.START_MENU_NAME))
-       # game_over_menu.append(Choice("Settings",self.display.settings_screen, (self,), self.SETTINGS_MENU_NAME))
         game_over_menu.append(Choice("New Game", self.new_game, (),  self.GAME_MENU_NAME))
         #Settings Menu
         settings_menu.append(Choice(self.BACK_OPTION,self.display.start_menu, (self,), self.START_MENU_NAME))
         settings_menu.append(Choice("Change Computer Player",self.change_computer_player, (), None))
         #Credits Menu
         credits_menu.append(Choice(self.BACK_OPTION,self.display.start_menu, (self,), self.START_MENU_NAME))
-        self.menus = {self.START_MENU_NAME:start_menu, self.GAME_MENU_NAME:game_menu, self.SETTINGS_MENU_NAME:settings_menu, self.GAME_OVER_MENU_NAME:game_over_menu, self.CREDITS_MENU_NAME:credits_menu}
+        self.menus = {self.START_MENU_NAME:start_menu, self.GAME_MENU_NAME:game_menu, self.SETTINGS_MENU_NAME:settings_menu}
         #Current menu is pointed to by self.menu
         self.menu = start_menu
         #Because the game has just started the previous menu is None
