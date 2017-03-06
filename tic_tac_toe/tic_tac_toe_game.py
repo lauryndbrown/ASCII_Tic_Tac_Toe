@@ -36,7 +36,7 @@ class TicTacToeGame(Game):
         #Start Menu
         start_menu.append(Choice("Start Game",self.display.game_screen, (self,), self.GAME_MENU_NAME))
         start_menu.append(Choice("Settings",self.display.settings_screen, (self,), self.SETTINGS_MENU_NAME))
-        start_menu.append(Choice("Exit TicTacToe",self.end_game, None, None))
+        start_menu.append(Choice("Exit TicTacToe",self.exit_game, None, None))
         #Game Menu
         game_menu.append(Choice("Make Next Move", self.move, (), None))
         game_menu.append(Choice("End Game",self.end_current_game, (), self.START_MENU_NAME))
@@ -120,12 +120,15 @@ class TicTacToeGame(Game):
         else:
             game.player_2 = RandomComputerPlayer(self.COMPUTER_NAME, TicTacToe.O)
         self.display.settings_screen(self)
-    def end_game(self):
+    def exit_game(self):
         """
-        Ends the current game.
+        Exits TicTacToe
         """
         self.display.exit_screen()
     def end_current_game(self):
+        """
+        Ends the current game and returns to start menu.
+        """
         self.current_player = self.player_1 
         self.game_board.empty_board()
         self.display.start_menu(self)
