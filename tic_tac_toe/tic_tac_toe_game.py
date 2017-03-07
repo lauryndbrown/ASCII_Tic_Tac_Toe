@@ -27,6 +27,7 @@ class TicTacToeGame(Game):
         Initializes in game menus and Game object
         """
         super().__init__(display, player1, player2)
+        self.turn = 0
         self.game_board = TicTacToe()
         start_menu = []
         game_menu = []
@@ -71,7 +72,7 @@ class TicTacToeGame(Game):
         def computer_player():
             if issubclass(self.current_player.__class__, ComputerPlayer):
                 self.display.computer_move(self)
-                row, col = self.current_player.move(self.game_board)    
+                row, col = self.current_player.move(self.game_board, self.turn)    
                 self.game_board.move((row,col), self.current_player.value)
         def game_over():
             if self.game_board.has_won():
@@ -84,6 +85,7 @@ class TicTacToeGame(Game):
                 self.display.game_screen(game, self.GAME_OVER)
                 return True
             return False
+        self.turn+=1
         row, col = self.display.move(self.current_player.value, self.game_board.avalible_moves())
         self.game_board.move((row,col), self.current_player.value)
         if not game_over():
@@ -105,8 +107,7 @@ class TicTacToeGame(Game):
         """
         Creates a new game and resets the board and player.
         """
-        self.current_player = self.player_1 
-        self.game_board.empty_board()
+        self.reset_game()
         self.display.game_screen(self)
     def change_computer_player(self):
         """
@@ -125,12 +126,19 @@ class TicTacToeGame(Game):
         Exits TicTacToe
         """
         self.display.exit_screen()
+    def reset_game(self):
+        """
+        Resets the game board and turns counter
+        """
+        self.current_player = self.player_1
+        self.turn = 0
+        self.game_board.empty_board()
+
     def end_current_game(self):
         """
         Ends the current game and returns to start menu.
         """
-        self.current_player = self.player_1 
-        self.game_board.empty_board()
+        self.reset_game()
         self.display.start_menu(self)
 if __name__=="__main__":
     display = TicTacToeDisplay()

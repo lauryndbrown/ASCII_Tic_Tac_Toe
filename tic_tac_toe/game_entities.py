@@ -109,9 +109,9 @@ class TicTacToe:
             
         return rows_same() or cols_same() or same_diagonal()
     def avalible_moves(self):
-        """
-        Returns a list of the avaliable moves.
-        """
+       """
+       Returns a list of the avaliable moves.
+       """
        return [(row, col) for row in range(len(self.board)) for col in range(len(self.board[row])) if self.board[row][col]==self.EMPTY ]
     def __str__(self):
         s = """\n{} | {} | {}\n----------\n{} | {} | {}\n----------\n{} | {} | {}\n""".format(self.board[0][0], self.board[0][1], self.board[0][2], self.board[1][0], self.board[1][1], self.board[1][2], self.board[2][0], self.board[2][1], self.board[2][2])
