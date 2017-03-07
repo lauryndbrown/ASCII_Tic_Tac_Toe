@@ -15,13 +15,14 @@ class TicTacToeDisplay(Display):
     IN_GAME_MENU_OFFSET = 4
     GAME_SCREEN_OFFSET = 28 + TITLE_OFFSET + IN_GAME_MENU_OFFSET 
     COMPUTER_MOVE_OFFSET = 1 + GAME_SCREEN_OFFSET #- IN_GAME_MENU_OFFSET
-    SETTINGS_SCREEN_OFFSET = 1 + TITLE_OFFSET + IN_GAME_MENU_OFFSET
+    SETTINGS_SCREEN_OFFSET = 2 + TITLE_OFFSET + IN_GAME_MENU_OFFSET
     CREDITS_SCREEN_OFFSET = 0 + TITLE_OFFSET + IN_GAME_MENU_OFFSET
     def __init__(self):
         col_size = 50
         super().__init__(col_size)
         self._create_ascii_images()
         self._create_board_parts()
+        self.computer_thinking = True
     def _create_ascii_images(self):
         """
         Used in __init__ 
@@ -128,22 +129,28 @@ class TicTacToeDisplay(Display):
         print(self.center("Tic Tac Toe", self.HR_BOLD))
         self.build_board(game.game_board.board)
         self.fill_screen(self.COMPUTER_MOVE_OFFSET)
-        print("Computer Thinking")
-        for _i in range(random.randrange(0,3)):
-            print(".")
-            time.sleep(1)
+        if self.computer_thinking:
+            print("Computer Thinking")
+            for _i in range(random.randrange(0,3)):
+                print(".")
+                time.sleep(1)
+    def toggle_computer_thinking(self):
+        """
+        """
+        if self.computer_thinking:
+            self.computer_thinking = False
+        else:
+            self.computer_thinking = True
     def settings_screen(self, game):
         self.clear_screen()
         print(self.center("Settings", self.HR_BOLD))
-        if isinstance(game.player_2, RandomComputerPlayer):
-            print("Computer Player: Random")
-        elif isinstance(game.player_2, MixedComputerPlayer):
-            print("Computer Player: Mixed")
-        else:
-            print("Computer Player: Perfect")
+        print("Game Mode: {}".format(game.mode))   
+        print("Computer Thinking Animation: {}".format(ON_OR_OFF[self.computer_thinking]))
+        print("Computer Player: Random")
         self.fill_screen(self.SETTINGS_SCREEN_OFFSET)
         self._in_game_menu(game.menu)
         self.last_menu = (self.settings_screen, (game,))
+
     def credits_screen(self, game):
         self.clear_screen()
         print(self.center("Credits", self.HR_BOLD))

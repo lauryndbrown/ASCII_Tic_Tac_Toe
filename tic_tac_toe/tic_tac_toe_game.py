@@ -5,6 +5,8 @@ from tic_tac_toe.player import *
 """
 TicTacToe Game Class
 """
+STANDARD = "Standard"
+WILD = "Wild"
 class TicTacToeGame(Game):
     """
     TicTacToe Game Class
@@ -46,7 +48,8 @@ class TicTacToeGame(Game):
         game_over_menu.append(Choice("New Game", self.new_game, (),  self.GAME_MENU_NAME))
         #Settings Menu
         settings_menu.append(Choice(self.BACK_OPTION,self.display.start_menu, (self,), self.START_MENU_NAME))
-        settings_menu.append(Choice("Change Computer Player",self.change_computer_player, (), None))
+        settings_menu.append(Choice("Change Play Mode",self.change_play_mode, (), None))
+        settings_menu.append(Choice("Toggle Computer Thinking Animation",self.toggle_computer_thinking, (), None))
         #Credits Menu
         credits_menu.append(Choice(self.BACK_OPTION,self.display.start_menu, (self,), self.START_MENU_NAME))
         self.menus = {self.START_MENU_NAME:start_menu, self.GAME_MENU_NAME:game_menu, 
@@ -56,6 +59,7 @@ class TicTacToeGame(Game):
         #Because the game has just started the previous menu is None
         self.prev_menu = None
         self.current_player = self.player_1
+        self.mode = STANDARD
     def start(self):
         """
         Display the start menu to the user
@@ -103,24 +107,24 @@ class TicTacToeGame(Game):
             self.current_player = self.player_2
         else:
             self.current_player = self.player_1
+    def change_play_mode(self):
+        """
+        Toggles Game Mode
+        """
+        if self.mode==STANDARD:
+            self.mode = WILD
+        else:
+            self.mode = STANDARD
+        self.display.settings_screen(self)
+    def toggle_computer_thinking(self):
+        self.display.toggle_computer_thinking()
+        self.display.settings_screen(self)
     def new_game(self):
         """
         Creates a new game and resets the board and player.
         """
         self.reset_game()
         self.display.game_screen(self)
-    def change_computer_player(self):
-        """
-        From the settings screen the user is able to pick between possible computer players.
-        Swaps the current computer player to the selected computer player by the user.
-        """
-        if isinstance(game.player_2, RandomComputerPlayer):
-            game.player_2 = MixedComputerPlayer(self.COMPUTER_NAME, TicTacToe.O)
-        elif isinstance(game.player_2, MixedComputerPlayer):
-            game.player_2 = PerfectComputerPlayer(self.COMPUTER_NAME, TicTacToe.O)
-        else:
-            game.player_2 = RandomComputerPlayer(self.COMPUTER_NAME, TicTacToe.O)
-        self.display.settings_screen(self)
     def exit_game(self):
         """
         Exits TicTacToe
@@ -143,7 +147,7 @@ class TicTacToeGame(Game):
 if __name__=="__main__":
     display = TicTacToeDisplay()
     player1 = TicTacToePlayer("Player1",TicTacToe.X)
-    player2 = PerfectComputerPlayer("Player2", TicTacToe.O)
+    player2 = RandomComputerPlayer("Player2", TicTacToe.O)
     game = TicTacToeGame(display, player1, player2)
     game.start()
 
