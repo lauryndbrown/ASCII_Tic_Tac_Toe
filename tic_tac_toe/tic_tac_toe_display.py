@@ -14,9 +14,8 @@ class TicTacToeDisplay(Display):
     TITLE_OFFSET = 3
     IN_GAME_MENU_OFFSET = 4
     GAME_SCREEN_OFFSET = 28 + TITLE_OFFSET + IN_GAME_MENU_OFFSET 
-    COMPUTER_MOVE_OFFSET = 1 + GAME_SCREEN_OFFSET #- IN_GAME_MENU_OFFSET
-    SETTINGS_SCREEN_OFFSET = 2 + TITLE_OFFSET + IN_GAME_MENU_OFFSET
-    CREDITS_SCREEN_OFFSET = 0 + TITLE_OFFSET + IN_GAME_MENU_OFFSET
+    COMPUTER_MOVE_OFFSET = 1 + GAME_SCREEN_OFFSET 
+    SETTINGS_SCREEN_OFFSET = 4 + TITLE_OFFSET + IN_GAME_MENU_OFFSET
     def __init__(self):
         col_size = 50
         super().__init__(col_size)
@@ -59,11 +58,17 @@ class TicTacToeDisplay(Display):
                     TicTacToe.X:self.ascii_x
                         }    
     def start_menu(self, game):
+        """
+        Displays Start Menu
+        """
         self.clear_screen()
         print(self.ascii_title)
         self._in_game_menu(game.menu)
         self.last_menu = (self.game_screen, (game,))
     def build_board(self, board):
+        """
+        Builds the Board for display
+        """
         def get_col(value, pos):
             if value==TicTacToe.EMPTY:
                 empty_col = self.board[value]
@@ -93,20 +98,38 @@ class TicTacToeDisplay(Display):
         print(row2, end="")
         print(self.board_offset+self.ascii_line)
         print(row3, end="")
-    def move(self, player_letter, moves):
-        def ask_next_move():
-            message = "You're player {}! Enter 1-9 for Position:".format(player_letter.upper())
+    def move(self, moves, game):
+        """
+        Asks the User for the next Move
+        """
+        def ask_next_move(message):
             while True:
                 response = input(message)
                 if response.isdigit():
                     response = int(response)
                 if response in range(1,10) and TicTacToe.get_row_col(response) in moves:
                     return response
-        pos = ask_next_move()
-        print("pos:", str(pos))
-        row, col = TicTacToe.get_row_col(int(pos))
-        return row, col
+        def ask_x_or_o(message):
+            while True:
+                response = input(message).lower()
+                if response == TicTacToe.X or response ==TicTacToe.O:
+                    return response
+        if game.mode == game.STANDARD_MODE:
+            message = "You're player {}! Enter 1-9 for Position:".format(game.player_1.value.upper())
+            pos = ask_next_move(message)
+            row, col = TicTacToe.get_row_col(int(pos))
+            return row, col
+        elif game.mode == game.WILD_MODE:
+            message = "X or O? "
+            value = ask_x_or_o(message)
+            message = "Enter 1-9 for Position:"
+            pos = ask_next_move(message)
+            row, col = TicTacToe.get_row_col(int(pos))
+            return row, col, value
     def game_screen(self, game, game_over=False):
+        """
+        Displays the Game Screen
+        """
         self.clear_screen()
         print(self.center("Tic Tac Toe", self.HR_BOLD))
         self.build_board(game.game_board.board)
@@ -115,16 +138,17 @@ class TicTacToeDisplay(Display):
             if not game.current_player:
                 message ="It's a tie."
             else:
-                player_name = game.current_player.value
-                player_name = player_name.upper()
-                if issubclass(game.current_player.__class__, ComputerPlayer):
+                if game.current_player.is_computer():
                     message ="Sorry. You Lose!"
                 else:
-                    message ="Congrats Player {}! You Win!".format(player_name) 
+                    message ="Congrats Player! You Win!"
             print(self.center(message," "))
         self._in_game_menu(game.menu)
         self.last_menu = (self.game_screen, (game,))
     def computer_move(self, game):
+        """
+        Plays computer thinking animation
+        """
         self.clear_screen()
         print(self.center("Tic Tac Toe", self.HR_BOLD))
         self.build_board(game.game_board.board)
@@ -135,13 +159,14 @@ class TicTacToeDisplay(Display):
                 print(".")
                 time.sleep(1)
     def toggle_computer_thinking(self):
-        """
-        """
         if self.computer_thinking:
             self.computer_thinking = False
         else:
             self.computer_thinking = True
     def settings_screen(self, game):
+        """
+        Displays the Settings Screen
+        """
         self.clear_screen()
         print(self.center("Settings", self.HR_BOLD))
         print("Game Mode: {}".format(game.mode))   
@@ -151,14 +176,15 @@ class TicTacToeDisplay(Display):
         self._in_game_menu(game.menu)
         self.last_menu = (self.settings_screen, (game,))
 
-    def credits_screen(self, game):
-        self.clear_screen()
-        print(self.center("Credits", self.HR_BOLD))
-        self.fill_screen(self.CREDITS_SCREEN_OFFSET)
-        self._in_game_menu(game.menu)
-        self.last_menu = (self.credits_screen, (game,))
     def exit_screen(self):
+        """
+        Displays the Message before the Game Exits
+        """
         print(self.center("Thanks for Playing!", ' '))
+
     def clear_screen(self):
+        """
+        Clears the screen
+        """
         lines = self.get_terminal_lines()
         print(lines*"\n")

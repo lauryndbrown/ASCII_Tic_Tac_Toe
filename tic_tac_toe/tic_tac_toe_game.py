@@ -5,8 +5,6 @@ from tic_tac_toe.player import *
 """
 TicTacToe Game Class
 """
-STANDARD = "Standard"
-WILD = "Wild"
 class TicTacToeGame(Game):
     """
     TicTacToe Game Class
@@ -14,12 +12,14 @@ class TicTacToeGame(Game):
     It builds the in-game menus and makes appropriate calls to related classes 
     in order to display information onto the screen and facilitate the TicTacToe game play.
     """
+    #Game Modes
+    STANDARD_MODE = "Standard"
+    WILD_MODE = "Wild"
     #Menu Names
     START_MENU_NAME = "Start"
     GAME_MENU_NAME = "Game"
     GAME_OVER_MENU_NAME = "Game Over"
     SETTINGS_MENU_NAME = "Settings"
-    CREDITS_MENU_NAME = "Credits"
     #Option Names
     BACK_OPTION = "Back"
     #Win/Lose
@@ -35,7 +35,6 @@ class TicTacToeGame(Game):
         game_menu = []
         game_over_menu = []
         settings_menu = []
-        credits_menu = []
         #Start Menu
         start_menu.append(Choice("Start Game",self.display.game_screen, (self,), self.GAME_MENU_NAME))
         start_menu.append(Choice("Settings",self.display.settings_screen, (self,), self.SETTINGS_MENU_NAME))
@@ -50,8 +49,6 @@ class TicTacToeGame(Game):
         settings_menu.append(Choice(self.BACK_OPTION,self.display.start_menu, (self,), self.START_MENU_NAME))
         settings_menu.append(Choice("Change Play Mode",self.change_play_mode, (), None))
         settings_menu.append(Choice("Toggle Computer Thinking Animation",self.toggle_computer_thinking, (), None))
-        #Credits Menu
-        credits_menu.append(Choice(self.BACK_OPTION,self.display.start_menu, (self,), self.START_MENU_NAME))
         self.menus = {self.START_MENU_NAME:start_menu, self.GAME_MENU_NAME:game_menu, 
                         self.SETTINGS_MENU_NAME:settings_menu, self.GAME_OVER_MENU_NAME:game_over_menu}
         #Current menu is pointed to by self.menu
@@ -59,7 +56,7 @@ class TicTacToeGame(Game):
         #Because the game has just started the previous menu is None
         self.prev_menu = None
         self.current_player = self.player_1
-        self.mode = STANDARD
+        self.mode = self.STANDARD_MODE
     def start(self):
         """
         Display the start menu to the user
@@ -74,10 +71,16 @@ class TicTacToeGame(Game):
         chosen if the game has come to an end.
         """
         def computer_player():
-            if issubclass(self.current_player.__class__, ComputerPlayer):
+            print("Computer Player", self.current_player.__class__, self.current_player==self.player_2)
+            if self.current_player.is_computer():
+                print("is computer")
                 self.display.computer_move(self)
-                row, col = self.current_player.move(self.game_board, self.turn)    
-                self.game_board.move((row,col), self.current_player.value)
+                if self.mode==self.STANDARD_MODE:
+                    row, col = self.current_player.move(self.game_board, self.turn)    
+                    value = self.current_player.value
+                else:
+                    row, col, value = self.current_player.move(self.game_board, self.turn)    
+                self.game_board.move((row,col), value)
         def game_over():
             if self.game_board.has_won():
                 self.menu = self.menus[self.GAME_OVER_MENU_NAME]
@@ -90,8 +93,12 @@ class TicTacToeGame(Game):
                 return True
             return False
         self.turn+=1
-        row, col = self.display.move(self.current_player.value, self.game_board.avalible_moves())
-        self.game_board.move((row,col), self.current_player.value)
+        if self.mode==self.STANDARD_MODE:
+            row, col = self.display.move(self.game_board.avalible_moves(), self)
+            value = self.current_player.value
+        else:
+            row, col, value = self.display.move(self.game_board.avalible_moves(), self)
+        self.game_board.move((row,col), value)
         if not game_over():
             self._switch_player()
             computer_player()
@@ -103,6 +110,7 @@ class TicTacToeGame(Game):
         Toggles the current_player variable between player_1 and player_2
         The current_player denotes the player who's turn is next.
         """
+        print("Switch Player")
         if self.current_player==self.player_1:
             self.current_player = self.player_2
         else:
@@ -111,10 +119,15 @@ class TicTacToeGame(Game):
         """
         Toggles Game Mode
         """
-        if self.mode==STANDARD:
-            self.mode = WILD
+        if self.mode==self.STANDARD_MODE:
+            self.mode = self.WILD_MODE
+            self.player_1 =  WildTicTacToePlayer(self.player_1.name)
+            self.player_2 =  WildComputerPlayer(self.player_2.name)
         else:
-            self.mode = STANDARD
+            self.mode = self.STANDARD_MODE
+            self.player_1 =  StandardTicTacToePlayer(self.player_1.name, TicTacToe.X)
+            self.player_2 =  RandomComputerPlayer(self.player_2.name, TicTacToe.O)
+        self.current_player = self.player_1
         self.display.settings_screen(self)
     def toggle_computer_thinking(self):
         self.display.toggle_computer_thinking()
@@ -146,7 +159,7 @@ class TicTacToeGame(Game):
         self.display.start_menu(self)
 if __name__=="__main__":
     display = TicTacToeDisplay()
-    player1 = TicTacToePlayer("Player1",TicTacToe.X)
+    player1 = StandardTicTacToePlayer("Player1",TicTacToe.X)
     player2 = RandomComputerPlayer("Player2", TicTacToe.O)
     game = TicTacToeGame(display, player1, player2)
     game.start()

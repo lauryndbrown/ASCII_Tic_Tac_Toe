@@ -1,6 +1,5 @@
 """
 Game Entities for ASCII Tic Tac Toe
-Note Game Utilizes Default Player Class
 """
 
 class TicTacToe:
