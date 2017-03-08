@@ -71,9 +71,7 @@ class TicTacToeGame(Game):
         chosen if the game has come to an end.
         """
         def computer_player():
-            print("Computer Player", self.current_player.__class__, self.current_player==self.player_2)
             if self.current_player.is_computer():
-                print("is computer")
                 self.display.computer_move(self)
                 if self.mode==self.STANDARD_MODE:
                     row, col = self.current_player.move(self.game_board, self.turn)    
@@ -110,7 +108,6 @@ class TicTacToeGame(Game):
         Toggles the current_player variable between player_1 and player_2
         The current_player denotes the player who's turn is next.
         """
-        print("Switch Player")
         if self.current_player==self.player_1:
             self.current_player = self.player_2
         else:
