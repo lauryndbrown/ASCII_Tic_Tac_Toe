@@ -9,6 +9,8 @@ Tic-Tac-Toe Implementation using [ASCII Game Framework](https://github.com/laury
 * Three Computer Player Modes: Random, Perfect, Mixed
 
 ## Get Running
+TODO: Add to pip
+
 Clone the Project.
 ```
 git clone git@github.com:lauryndbrown/ASCII_Tic_Tac_Toe.git --recursive
@@ -17,7 +19,8 @@ Then run this command below and follow the in-game prompts. You'll need **Python
 ```
 python -m tic_tac_toe.tic_tac_toe_game
 ```
-
+## Screenshots
+TODO: Add screen shots of start menu, options menu, and a gif/image of gameplay.
 ## Files
 * **tic_tac_toe_game.py** - Contains the logic for the menus in the game. 
 * **tic_tac_toe_display.py** - Creates everything you see on the screen. 
